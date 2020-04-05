@@ -365,33 +365,7 @@ public class Estatistica {
 	 * </ul>
 	 */
 	public void summary(){
-		
-		System.out.println("========================= Summary ======================");
-		
-		ordenar();
-		imprimir();
-		
-		printf("%-20s%-20s\n","n",dados.length); 
-		printf("%-20s%-20s\n","Media",precisao(mediaAritmetica(),2));
-		printf("%-20s%-20s\n","Variancia",precisao(variancia(),2));
-		printf("%-20s%-20s\n","Desvio padrão",precisao(desvioPadrao(),2));
-		printf("%-20s%-20s\n","Mediana",mediana());
-		printf("%-20s%-20s\n","Moda",moda());
-
-		Item[] freq = frequency();
-		String[] pdf = precisao(pdf(),2);
-		String[] cdf = precisao(cdf(),2);
-
-		printf("%-20s%-20s\n","freq",Arrays.toString(freq));
-		printf("%-20s%-20s\n","pdf",Arrays.toString(pdf));
-		printf("%-20s%-20s\n","cdf",Arrays.toString(cdf));
-		
-		printf("%-20s%-20s\n","quartis",Arrays.toString(quartis()));
-		
-		System.out.println(histograma());
-		
-		System.out.println("IC="+Arrays.toString(ic(.90)));
-		System.out.println("========================================================");
+		System.out.println(getSummary());
 	}
 	
 	
