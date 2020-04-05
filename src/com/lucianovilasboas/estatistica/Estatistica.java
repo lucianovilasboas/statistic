@@ -19,6 +19,7 @@ import java.util.Scanner;
 public class Estatistica {
 
 	private double dados[];
+	private double min, max;
 
 	public Estatistica(double[] dados) {
 		this.dados = dados;
@@ -323,13 +324,13 @@ public class Estatistica {
 	/**
 	 * Exibe um histograma dos dados
 	 */
-	public void histograma(){ 
+	public String histograma(){ 
 		StringBuilder sb = new StringBuilder("Histograma\n");
 		Item[] freq = frequency();
 		for (Item i : freq) {
 			 sb.append(String.format("%5s ",i.value)).append(criaBarra(i.frequency, "=")).append("\n"); 
 		} 
-		System.out.println(sb.toString()); 
+		return  sb.toString(); 
 	}
 	
 	/**
@@ -387,12 +388,60 @@ public class Estatistica {
 		
 		printf("%-20s%-20s\n","quartis",Arrays.toString(quartis()));
 		
-		histograma();
+		System.out.println(histograma());
 		
 		System.out.println("IC="+Arrays.toString(ic(.90)));
 		System.out.println("========================================================");
 	}
 	
+	
+	public String getSummary(){
+		
+		StringBuilder sb = new StringBuilder("========================= Summary ======================\n");
+		
+		ordenar();
+		
+		sb.append(String.format("%-20s%-20s\n","Dados",Arrays.toString(dados) ));
+		sb.append(String.format("%-20s%-20s\n","N",dados.length)); 
+		sb.append(String.format("%-20s%-20s\n","Min",min()));
+		sb.append(String.format("%-20s%-20s\n","Media",precisao(mediaAritmetica(),2)));
+		sb.append(String.format("%-20s%-20s\n","Variancia",precisao(variancia(),2)));
+		sb.append(String.format("%-20s%-20s\n","Desvio padrão",precisao(desvioPadrao(),2)));
+		sb.append(String.format("%-20s%-20s\n","Mediana",mediana()));
+		sb.append(String.format("%-20s%-20s\n","Max",max()));
+		sb.append(String.format("%-20s%-20s\n","Moda",moda()));
+
+		Item[] freq = frequency();
+		String[] pdf = precisao(pdf(),2);
+		String[] cdf = precisao(cdf(),2);
+
+		sb.append(String.format("%-20s%-20s\n","freq",Arrays.toString(freq)));
+		sb.append(String.format("%-20s%-20s\n","pdf",Arrays.toString(pdf)));
+		sb.append(String.format("%-20s%-20s\n","cdf",Arrays.toString(cdf)));
+		
+		sb.append(String.format("%-20s%-20s\n","quartis",Arrays.toString(quartis())));
+		
+		sb.append(String.format("%-20s\n",histograma()));
+		
+		
+		sb.append(String.format("IC="+Arrays.toString(ic(.90))));
+		sb.append(String.format("\n========================================================\n"));
+		
+		return sb.toString();
+	}
+	
+	
+	
+	public double max() {
+        this.max = Arrays.stream(this.dados).max().getAsDouble();
+		return this.max;
+	}
+
+	public double  min() {
+		this.min = Arrays.stream(this.dados).min().getAsDouble();
+		return this.min;
+	}
+
 	/**
 	 * Calcula o intervalo de confiança para os dados amostrais
 	 * @param nivelDeConfiança
